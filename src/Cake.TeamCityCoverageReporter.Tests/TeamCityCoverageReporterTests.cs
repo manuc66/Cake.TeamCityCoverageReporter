@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using Cake.Core;
 using Cake.Core.Diagnostics;
 using Cake.Core.IO;
@@ -14,7 +13,7 @@ namespace Cake.TeamCityCoverageReporter.Tests
 {
     public class TeamCityCoverageReporterTests
     {
-        private static async Task WhenReceiveThenExpectTeamCityCoverageReport(string sampleFile, string sampleExpectedResultsPath)
+        private static void WhenReceiveThenExpectTeamCityCoverageReport(string sampleFile, string sampleExpectedResultsPath)
         {
             // Given
             var sampleFilePath = new FilePath(sampleFile);
@@ -33,7 +32,7 @@ namespace Cake.TeamCityCoverageReporter.Tests
             mockCakeContext.Object.TeamCityCoverageReporter(sampleFilePath);
 
             // Then
-            var expectedRows = await File.ReadAllLinesAsync(sampleExpectedResultsPath).ConfigureAwait(false);
+            var expectedRows = File.ReadAllLines(sampleExpectedResultsPath);
             var result = string.Join(Environment.NewLine, loggedRows);
             var expected = string.Join(Environment.NewLine, expectedRows);
             result.ShouldBe(expected);
@@ -41,33 +40,33 @@ namespace Cake.TeamCityCoverageReporter.Tests
 
         [Fact]
         [UseCulture("fr-FR")]
-        public async Task GIVEN_SampleFiles_WithFrench_Culture_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
+        public void GIVEN_SampleFiles_WithFrench_Culture_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
         {
-            await GIVEN_SampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected();
+            GIVEN_SampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected();
         }
 
         [Fact]
         [UseCulture("en-GB")]
-        public async Task GIVEN_SampleFiles_WithEnglish_Culture_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
+        public void GIVEN_SampleFiles_WithEnglish_Culture_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
         {
-            await GIVEN_SampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected();
+            GIVEN_SampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected();
         }
 
         [Fact]
-        public async Task GIVEN_SampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
+        public void GIVEN_SampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
         {
             const string sampleFile = @".\Sample1.xml";
             const string sampleExpectedResultsPath = @".\Sample1-Expected.txt";
-            await WhenReceiveThenExpectTeamCityCoverageReport(sampleFile, sampleExpectedResultsPath);
+            WhenReceiveThenExpectTeamCityCoverageReport(sampleFile, sampleExpectedResultsPath);
         }
 
         [Fact]
-        public async Task GIVEN_EmptySampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
+        public void GIVEN_EmptySampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
         {
             // Given
             const string sampleFile = @".\Sample2-Empty.xml";
             const string sampleExpectedResultsPath = @".\Sample2-Empty-Expected.txt";
-            await WhenReceiveThenExpectTeamCityCoverageReport(sampleFile, sampleExpectedResultsPath);
+            WhenReceiveThenExpectTeamCityCoverageReport(sampleFile, sampleExpectedResultsPath);
         }
     }
 }
