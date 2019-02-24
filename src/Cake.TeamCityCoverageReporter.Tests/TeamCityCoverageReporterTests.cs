@@ -33,40 +33,41 @@ namespace Cake.TeamCityCoverageReporter.Tests
             mockCakeContext.Object.TeamCityCoverageReporter(sampleFilePath);
 
             // Then
-            var result = string.Join("\r\n", loggedRows);
-            var expected = await File.ReadAllTextAsync(sampleExpectedResultsPath).ConfigureAwait(false);
+            var expectedRows = await File.ReadAllLinesAsync(sampleExpectedResultsPath).ConfigureAwait(false);
+            var result = string.Join(Environment.NewLine, loggedRows);
+            var expected = string.Join(Environment.NewLine, expectedRows);
             result.ShouldBe(expected);
         }
 
         [Fact]
         [UseCulture("fr-FR")]
-        public Task GIVEN_SampleFiles_WithFrench_Culture_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
+        public async Task GIVEN_SampleFiles_WithFrench_Culture_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
         {
-            return GIVEN_SampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected();
+            await GIVEN_SampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected();
         }
 
         [Fact]
         [UseCulture("en-GB")]
-        public Task GIVEN_SampleFiles_WithEnglish_Culture_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
+        public async Task GIVEN_SampleFiles_WithEnglish_Culture_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
         {
-            return GIVEN_SampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected();
+            await GIVEN_SampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected();
         }
 
         [Fact]
-        public Task GIVEN_SampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
+        public async Task GIVEN_SampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
         {
             const string sampleFile = @".\Sample1.xml";
             const string sampleExpectedResultsPath = @".\Sample1-Expected.txt";
-            return WhenReceiveThenExpectTeamCityCoverageReport(sampleFile, sampleExpectedResultsPath);
+            await WhenReceiveThenExpectTeamCityCoverageReport(sampleFile, sampleExpectedResultsPath);
         }
 
         [Fact]
-        public Task GIVEN_EmptySampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
+        public async Task GIVEN_EmptySampleFiles_WHEN_ReporterCalled_THEN_OutputIsAsExpected()
         {
             // Given
             const string sampleFile = @".\Sample2-Empty.xml";
             const string sampleExpectedResultsPath = @".\Sample2-Empty-Expected.txt";
-            return WhenReceiveThenExpectTeamCityCoverageReport(sampleFile, sampleExpectedResultsPath);
+            await WhenReceiveThenExpectTeamCityCoverageReport(sampleFile, sampleExpectedResultsPath);
         }
     }
 }
